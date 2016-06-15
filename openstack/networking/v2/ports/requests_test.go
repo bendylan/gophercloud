@@ -116,6 +116,12 @@ func TestGet(t *testing.T) {
                 "ip_address": "10.0.0.1"
             }
         ],
+				"extra_dhcp_opts": [
+						{
+								"opt_name": "121",
+								"opt_value": "0.0.0.0/0,192.168.3.1"
+				  	}
+				],
         "id": "46d4bfb9-b26e-41f3-bd2e-e6dcc1ccedb2",
         "security_groups": [],
         "device_id": "5e3898d7-11be-483e-9732-b2f5eccd2b2e"
@@ -136,6 +142,9 @@ func TestGet(t *testing.T) {
 	th.AssertEquals(t, n.MACAddress, "fa:16:3e:23:fd:d7")
 	th.AssertDeepEquals(t, n.FixedIPs, []IP{
 		IP{SubnetID: "a0304c3a-4f08-4c43-88af-d796509c97d2", IPAddress: "10.0.0.1"},
+	})
+	th.AssertDeepEquals(t, n.ExtraDhcpOpts, []ExtraDhcpOpt{
+		ExtraDhcpOpt{OptName: "121", OptValue: "0.0.0.0/0,192.168.3.1"}
 	})
 	th.AssertEquals(t, n.ID, "46d4bfb9-b26e-41f3-bd2e-e6dcc1ccedb2")
 	th.AssertDeepEquals(t, n.SecurityGroups, []string{})
@@ -162,6 +171,12 @@ func TestCreate(t *testing.T) {
 						{
 								"subnet_id": "a0304c3a-4f08-4c43-88af-d796509c97d2",
 								"ip_address": "10.0.0.2"
+						}
+				],
+				"extra_dhcp_opts": [
+						{
+								"opt_name": "3",
+								"opt_value": "10.0.0.1"
 						}
 				],
 				"security_groups": ["foo"],
@@ -194,6 +209,12 @@ func TestCreate(t *testing.T) {
                 "ip_address": "10.0.0.2"
             }
         ],
+				"extra_dhcp_opts": [
+						{
+								"opt_name": "3",
+								"opt_value": "10.0.0.1"
+						}
+				],
         "id": "65c0ee9f-d634-4522-8954-51021b570b0d",
         "security_groups": [
             "f0ac4394-7e4a-4409-9701-ba8be283dbc3"
@@ -219,6 +240,9 @@ func TestCreate(t *testing.T) {
 			IP{SubnetID: "a0304c3a-4f08-4c43-88af-d796509c97d2", IPAddress: "10.0.0.2"},
 		},
 		SecurityGroups: []string{"foo"},
+		ExtraDhcpOpts: []ExtraDhcpOpt{
+			ExtraDhcpOpt{OptName: "3", OptValue: "10.0.0.1"},
+		},
 		AllowedAddressPairs: []AddressPair{
 			AddressPair{IPAddress: "10.0.0.4", MACAddress: "fa:16:3e:c9:cb:f0"},
 		},
@@ -235,6 +259,9 @@ func TestCreate(t *testing.T) {
 	th.AssertEquals(t, n.MACAddress, "fa:16:3e:c9:cb:f0")
 	th.AssertDeepEquals(t, n.FixedIPs, []IP{
 		IP{SubnetID: "a0304c3a-4f08-4c43-88af-d796509c97d2", IPAddress: "10.0.0.2"},
+	})
+	th.AssertDeepEquals(t, n.ExtraDhcpOpts, []ExtraDhcpOpt{
+		ExtraDhcpOpt{OptName: "3", OptValue: "10.0.0.1"},
 	})
 	th.AssertEquals(t, n.ID, "65c0ee9f-d634-4522-8954-51021b570b0d")
 	th.AssertDeepEquals(t, n.SecurityGroups, []string{"f0ac4394-7e4a-4409-9701-ba8be283dbc3"})
@@ -277,7 +304,13 @@ func TestUpdate(t *testing.T) {
         ],
 				"security_groups": [
             "f0ac4394-7e4a-4409-9701-ba8be283dbc3"
-        ]
+        ],
+				"extra_dhcp_opts": [
+					{
+						"opt_name": "3",
+						"opt_value": "10.0.0.1"
+					}
+				],
 		}
 }
 			`)
@@ -301,6 +334,12 @@ func TestUpdate(t *testing.T) {
                 "ip_address": "10.0.0.3"
             }
         ],
+				"extra_dhcp_opts": [
+						{
+								"opt_name": "3",
+								"opt_value": "10.0.0.1"
+						}
+				],
         "allowed_address_pairs": [
           {
             "ip_address": "10.0.0.4",
@@ -326,6 +365,9 @@ func TestUpdate(t *testing.T) {
 		AllowedAddressPairs: []AddressPair{
 			AddressPair{IPAddress: "10.0.0.4", MACAddress: "fa:16:3e:c9:cb:f0"},
 		},
+		ExtraDhcpOpts: []ExtraDhcpOpt{
+			ExtraDhcpOpt{OptName: "3", OptValue: "10.0.0.1"},
+		},
 	}
 
 	s, err := Update(fake.ServiceClient(), "65c0ee9f-d634-4522-8954-51021b570b0d", options).Extract()
@@ -339,6 +381,9 @@ func TestUpdate(t *testing.T) {
 		AddressPair{IPAddress: "10.0.0.4", MACAddress: "fa:16:3e:c9:cb:f0"},
 	})
 	th.AssertDeepEquals(t, s.SecurityGroups, []string{"f0ac4394-7e4a-4409-9701-ba8be283dbc3"})
+	th.AssertDeepEquals(t, s.ExtraDhcpOpts, []ExtraDhcpOpt{
+		ExtraDhcpOpt{OptName: "3", OptValue: "10.0.0.1"},
+	})
 }
 
 func TestDelete(t *testing.T) {

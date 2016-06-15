@@ -55,6 +55,12 @@ type AddressPair struct {
 	MACAddress string `mapstructure:"mac_address" json:"mac_address,omitempty"`
 }
 
+// ExtraDhcpOpt is a sub-struct that represents a optname / optvalue pair
+type ExtraDhcpOpt struct {
+	OptName  string `mapstructure:"opt_name" json:"opt_name"`
+	OptValue string `mapstructure:"opt_value" json:"opt_value"`
+}
+
 // Port represents a Neutron port. See package documentation for a top-level
 // description of what this is.
 type Port struct {
@@ -84,6 +90,8 @@ type Port struct {
 	DeviceID string `mapstructure:"device_id" json:"device_id"`
 	// Identifies the list of IP addresses the port will recognize/accept
 	AllowedAddressPairs []AddressPair `mapstructure:"allowed_address_pairs" json:"allowed_address_pairs"`
+	// Extra DHCP options for the port
+	ExtraDhcpOpts []ExtraDhcpOpt `mapstructure:"extra_dhcp_opts" json:"extra_dhcp_opts"`
 }
 
 // PortPage is the page returned by a pager when traversing over a collection

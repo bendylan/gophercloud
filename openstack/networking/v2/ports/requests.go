@@ -105,6 +105,7 @@ type CreateOpts struct {
 	TenantID            string
 	SecurityGroups      []string
 	AllowedAddressPairs []AddressPair
+	ExtraDhcpOpts       []ExtraDhcpOpt
 }
 
 // ToPortCreateMap casts a CreateOpts struct to a map.
@@ -143,6 +144,9 @@ func (opts CreateOpts) ToPortCreateMap() (map[string]interface{}, error) {
 	if opts.AllowedAddressPairs != nil {
 		p["allowed_address_pairs"] = opts.AllowedAddressPairs
 	}
+	if opts.ExtraDhcpOpts != nil {
+		p["extra_dhcp_opts"] = opts.ExtraDhcpOpts
+	}
 
 	return map[string]interface{}{"port": p}, nil
 }
@@ -179,6 +183,7 @@ type UpdateOpts struct {
 	DeviceOwner         string
 	SecurityGroups      []string
 	AllowedAddressPairs []AddressPair
+	ExtraDhcpOpts				[]ExtraDhcpOpt
 }
 
 // ToPortUpdateMap casts an UpdateOpts struct to a map.
@@ -205,6 +210,9 @@ func (opts UpdateOpts) ToPortUpdateMap() (map[string]interface{}, error) {
 	}
 	if opts.AllowedAddressPairs != nil {
 		p["allowed_address_pairs"] = opts.AllowedAddressPairs
+	}
+	if opts.ExtraDhcpOpts != nil {
+		p["extra_dhcp_opts"] = opts.ExtraDhcpOpts
 	}
 
 	return map[string]interface{}{"port": p}, nil
